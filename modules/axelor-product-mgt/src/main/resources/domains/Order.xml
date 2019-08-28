@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models
+	xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
+
+	<module package="com.axelor.product.db" name="product"/>
+	<entity name="Order">
+		<string name="orderCode" required="true" namecolumn="true" unique="true"/>
+		<many-to-one name="customer" ref="com.axelor.emp.db.Employee" title="Customer"/>
+		<date name="orderDate" title="Order Date"/>
+		<decimal name="amount" title="Amount" default="0.0"/>
+		<one-to-many name="orderItems" ref="com.axelor.product.db.OrderItem" title="Order Items" mappedBy="orderId"/>
+	</entity>
+
+</domain-models>

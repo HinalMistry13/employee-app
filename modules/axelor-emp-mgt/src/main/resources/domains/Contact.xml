@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models
+	xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
+
+	<module package="com.axelor.emp.db" name="employee"/>
+	<entity name="Contact">
+		<string name="type" title="Type"/>
+		<string name="contactNumber" title="Contact Number" required="true"/>
+		<many-to-one name="employee" ref="com.axelor.emp.db.Employee" title="Employee"/>
+	</entity>
+
+</domain-models>

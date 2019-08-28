@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<grid model="com.axelor.product.db.Order" title="Orders" name="order-grid">
+		<!-- <menubar> -->
+		<!-- <menu title="Report" icon="fa-print" if=""> -->
+		<!-- <item action="action-report-order" title="Print Invoice" /> -->
+		<!-- </menu> -->
+		<!-- </menubar> -->
+		<field name="orderCode" title="Order Code" />
+		<field name="orderDate" title="Order Date" />
+		<field name="customer" title="Customer" />
+		<field name="orderItems" title="Order Items" />
+		<field name="amount" title="Amount" />
+	</grid>
+
+	<form model="com.axelor.product.db.Order" title="Order" name="order-form" onNew="action-set-defaultvalue">
+		<toolbar>
+			<button name="btnPrint" title="Print" showTitle="false" showIf="id" onClick="action-report-order" icon="fa-print" />
+		</toolbar>
+		<panel>
+			<field name="orderCode" required="true" />
+			<field name="orderDate" required="true" />
+			<field name="customer" required="true" />
+		</panel>
+		<panel-related field="orderItems" form-view="order-items">
+			<field name="product" />
+			<field name="quantity" />
+			<field name="price" />
+		</panel-related>
+		<panel>
+			<field name="amount" readonly="true" />
+			<button name="showTotal" onClick="save,action-get-total-amount,save" title="Total amount" />
+		</panel>
+	</form>
+
+	<form model="com.axelor.product.db.OrderItem" title="Order Items" name="order-items">
+		<field name="product" required="true" onChange="action-get-price" />
+		<field name="quantity" required="true" />
+		<field name="price" readonly="true" />
+	</form>
+
+	<action-attrs name="action-get-price">
+		<attribute name="value:set" for="price" expr="eval: product.price" />
+	</action-attrs>
+
+	<action-method name="action-get-total-amount">
+		<call class="com.axelor.product.controller.OrderController" method="getTotalAmount" />
+	</action-method>
+
+	<action-record name="action-set-defaultvalue" model="com.axelor.product.db.Order">
+		<field name="amount" expr="0.0" />
+	</action-record>
+
+	<action-report output="order-${date}${time}" name="action-report-order" design="product_order.rptdesign" format="pdf">
+		<param name="orderId" expr="eval:__self__.id" />
+	</action-report>
+</object-views>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<chart name="chart.sales.per.month.bar" title="Sales per month : Bar Chart">
+		<dataset type="jpql"> 
+			<![CDATA[			
+ 				SELECT 
+ 				    SUM(self.amount) AS amount,
+ 				    MONTH(self.orderDate) AS month, 
+				    _customer.name AS customer 
+ 				FROM 
+ 				    Order self 
+ 				LEFT JOIN 
+ 				    self.customer AS _customer
+ 				WHERE 
+ 				    YEAR(self.orderDate) = YEAR(current_date) 
+ 				GROUP BY
+ 				    _customer,
+ 				    MONTH(self.orderDate) 
+ 				ORDER BY 
+ 				    month
+			]]>
+		</dataset>
+		<category key="month" type="month" />
+		<series key="amount" groupBy="customer" type="bar" />
+		<config name="colors" value="red,blue,yellow"/>
+		<config name="xFormat" value="MMMM"/>
+	</chart>	
+	
+	<chart name="chart.sales.per.month.hbar" title="Sales per month : hbar chart">
+		<dataset type="jpql"> 
+			<![CDATA[
+				SELECT
+				    SUM(self.amount) AS amount,
+				    MONTH(self.orderDate) AS month,
+				    _customer.name AS customer
+				FROM
+				    Order self
+				LEFT JOIN
+				    self.customer AS _customer
+				WHERE
+				    YEAR(self.orderDate) = YEAR(current_date)
+				GROUP BY
+				    _customer,
+				    MONTH(self.orderDate)
+				ORDER BY
+				    month
+			]]>
+		</dataset>
+		<category key="month" type="month" />
+		<series key="amount" groupBy="customer" type="hbar" />
+	</chart>
+	
+	<chart name="chart.product.sale.pie" title="Product sale : pie chart" >
+		<dataset type="jpql"> 
+			<![CDATA[
+				SELECT
+				    SUM(self.quantity) AS quantity,
+				    _product.name AS product
+				FROM
+				    OrderItem self
+				LEFT JOIN
+				    self.product AS _product
+				GROUP BY
+				    _product
+			]]>
+		</dataset>
+		<category key="product" type="text" />
+		<series key="quantity" groupBy="product" type="pie" />
+		<config name="percent" value="true"/>
+	</chart>	
+	
+	<chart name="chart.product.sale.line" title="Product sale : Line chart" >
+		<dataset type="sql"> 
+			<![CDATA[
+				SELECT
+				    SUM(order_item.quantity) AS quantity,
+				    pp.name AS product_name
+				FROM
+				    product_order_item order_item
+				LEFT JOIN
+				   product_product pp on (pp.id=order_item.product)
+				GROUP BY
+				    product_name
+				ORDER BY
+					quantity ASC
+			]]>
+		</dataset>
+		<category key="product_name" type="text" title="Category"/>
+		<series key="quantity" groupBy="product_name" type="line"/>
+	</chart>	
+	
+	
+	<chart name="chart.product.sale.donut" title="Product sale : donut chart">
+		<dataset type="jpql"> 
+			<![CDATA[
+				SELECT
+				    SUM(self.quantity) AS quantity,
+				    _product.name AS product
+				FROM
+				    OrderItem self
+				LEFT JOIN
+				    self.product AS _product
+				GROUP BY
+				    _product
+			]]>
+		</dataset>
+		<category key="product" type="text" />
+		<series key="quantity" groupBy="product" type="donut" />
+	</chart>
+	
+	<chart name="chart.product.sale.funnel" title="Product sale : funnel chart">
+		<dataset type="jpql"> 
+			<![CDATA[
+				SELECT
+				    SUM(self.quantity) AS quantity,
+				    _product.name AS product
+				FROM
+				    OrderItem self
+				LEFT JOIN
+				    self.product AS _product
+				GROUP BY
+				    _product
+			]]>
+		</dataset>
+		<category key="product" type="text" />
+		<series key="quantity" groupBy="product" type="funnel" />
+	</chart>
+	
+</object-views>

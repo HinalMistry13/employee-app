@@ -1,0 +1,3 @@
+rootProject.name = 'axelor-employee-app'
+include "modules:axelor-emp-mgt"
+include "modules:axelor-product-mgt"

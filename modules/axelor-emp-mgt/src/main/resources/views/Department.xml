@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+	
+	<grid model="com.axelor.emp.db.Department" title="Department" name="department-grid">
+		<field name="name" title="Department Name"/>
+		<field name="isTechnical" title="Is Technical"/>
+		<field name="details" title="Department Details"/>
+	</grid>
+	
+	<form model="com.axelor.emp.db.Department" title="Department" name="department-form">
+		<panel>
+			<field name="name"/>
+			<field name="details" />
+			<field name="isTechnical" widget="boolean-switch"/>
+		</panel>
+	</form>
+	
+</object-views>

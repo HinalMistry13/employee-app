@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<selection name="com.axelor.project.state">
+		<option value="toDo">To Do</option>
+		<option value="inProgress">In Progress</option>
+		<option value="completed">Completed</option>
+	</selection>
+
+	<grid model="com.axelor.emp.db.Project" title="Projects" name="project-grid">
+		<field name="name" title="Project Name" />
+		<field name="type" title="Project Type" />
+		<field name="startDate" title="Start Date" />
+		<field name="endDate" title="End Date" />
+		<field name="state" title="Project State" />
+		<field name="priority" title="Priority" />
+		<field name="employees" title="Employees" />
+	</grid>
+
+	<form model="com.axelor.emp.db.Project" title="Project" name="project-form" onNew="project-on-create,default-data" onSave="onSave-actions">
+		<panel>
+			<field name="name" />
+			<field name="type" />
+			<field name="startDate" />
+			<field name="endDate" />
+			<field name="state"/>
+<!-- 			<field name="priority" /> -->
+		</panel>
+		<panel field="employees" form-view="employee-form-popup">
+			<field name="name" />
+			<field name="salary" />
+			<field name="department" />
+			<field name="location" />
+			<field name="contacts"/>
+		</panel>
+	</form>
+	
+	<form model="com.axelor.emp.db.Employee" title="Employee" name="employee-form-popup">
+		<panel>
+			<field name="name" />
+			<field name="salary" />
+			<field name="department" />
+			<field name="location" />
+		</panel>
+		<panel title="Contacts">
+			<field name="contacts" showTitle="false" colSpan="12">
+				<editor>
+					<field name="type" />
+					<field name="contactNumber" />
+				</editor>
+			</field>
+		</panel>
+	</form>
+
+	<kanban name="project-kanban" title="Projects" model="com.axelor.emp.db.Project" columnBy="state" sequenceBy="priority">
+		<field name="name" />
+		<field name="type" />
+		<field name="startDate" />
+		<field name="endDate" />
+		<field name="state" />
+		<field name="priority" />
+		<template>
+			<![CDATA[
+				<h4>{{name}} ({{type}})</h4>
+				<div class="card-footer">
+					<i class='fa fa-clock-o'></i> <span>{{startDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    			</div>
+			]]>
+		</template>
+	</kanban>
+
+	<calendar name="project-calendar" title="Assign Projects" model="com.axelor.emp.db.Project" colorBy="name" eventStart="startDate" eventStop="endDate" eventLength="1">
+		<field name="name" />
+	</calendar>
+	
+	<action-attrs name="project-on-create">
+		<attribute for="state" name="value:set" expr="toDo"/>
+		<attribute name="value:set" for="priority" expr="1"/>
+	</action-attrs>
+	
+	<action-record name="default-data" model="com.axelor.emp.db.Project">
+		<field name="startDate" expr="eval: __date__"/>
+		<field name="endDate" expr="eval: __date__ "/>
+	</action-record>
+	
+	<action-validate name="date-validation">
+		<error message="Project start date must be in future." if="startDate &lt; __date__"/>
+		<error message="Project end date must be in future." if="endDate &lt; __date__"/>
+	</action-validate>
+	
+	<action-condition name="check-startDate-endDate">
+		<check field="name" error="Project name must required..!"/>
+		<check field="endDate" if="endDate &lt; startDate" error="Project end date must be greater than start date."/>
+	</action-condition>
+	
+	<action-group name="onSave-actions">
+		<action name="date-validation"/>
+		<action name="check-startDate-endDate"/>
+	</action-group>
+	
+</object-views>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<menuitem title="Employee Mgt" name="menu-empmgt-root" />
+
+	<menuitem title="Departments" name="menu-empmgt-root-department" parent="menu-empmgt-root" action="action.empmgt.department" />
+	<action-view name="action.empmgt.department" title="Departments" model="com.axelor.emp.db.Department">
+		<view type="grid" name="department-grid" />
+		<view type="form" name="department-form" />
+	</action-view>
+
+	<menuitem title="Employees" name="menu-empmgt-root-employee" parent="menu-empmgt-root" action="action.empmgt.employee" />
+	<action-view name="action.empmgt.employee" title="Employees" model="com.axelor.emp.db.Employee">
+		<view type="grid" name="employee-grid" />
+		<view type="form" name="employee-form" />
+		<view type="cards" name="employee-card" />
+		<context name="json-enhance" expr="true" />
+	</action-view>
+
+	<menuitem title="Contact" name="menu-empmgt-root-contact" parent="menu-empmgt-root" action="action.empmgt.contact"/>
+	<action-view name="action.empmgt.contact" title="Contacts" model="com.axelor.emp.db.Contact">
+		<view type="grid" name="contact-grid" />
+		<view type="form" name="contact-form" />
+	</action-view>
+
+	<menuitem title="Locations" name="menu-empmgt-root-location" parent="menu-empmgt-root" action="action.empmgt.location" />
+	<action-view name="action.empmgt.location" title="Locations" model="com.axelor.emp.db.Location">
+		<view type="grid" name="location-grid" />
+		<view type="form" name="location-form" />
+	</action-view>
+
+	<menuitem title="Projects" name="menu-empmgt-root-project" parent="menu-empmgt-root" />
+	
+	<menuitem title="All Projects" name="menu-empmgt-root-project-all" parent="menu-empmgt-root-project" action="action.empmgt.project.all"/>
+	<action-view name="action.empmgt.project.all" title="Projects" model="com.axelor.emp.db.Project">
+		<view type="grid" name="project-grid" />
+		<view type="kanban" name="project-kanban"/>
+		<view type="calendar" name="project-calendar"/>
+		<view type="form" name="project-form" />
+	</action-view>
+	
+	<menuitem title="To Do Projects" name="menu-empmgt-root-project-todo" parent="menu-empmgt-root-project" action="action.empmgt.project.todo"/>
+	<action-view name="action.empmgt.project.todo" title="To Do Projects" model="com.axelor.emp.db.Project" >
+		<view type="grid" name="project-grid" />
+		<domain>self.state = :state</domain>
+		<context name="state" expr="toDo"/>
+	</action-view>
+	
+	<menuitem title="In Progress Projects" name="menu-empmgt-root-project-inprogress" parent="menu-empmgt-root-project" action="action.empmgt.project.inprogress"/>
+	<action-view name="action.empmgt.project.inprogress" title="In Progress Projects" model="com.axelor.emp.db.Project" >
+		<view type="grid" name="project-grid" />
+		<domain>self.state = :state</domain>
+		<context name="state" expr="inProgress"/>
+	</action-view>
+	
+	<menuitem title="Completed Projects" name="menu-empmgt-root-project-completed" parent="menu-empmgt-root-project" action="action.empmgt.project.completed"/>
+	<action-view name="action.empmgt.project.completed" title="Completed Projects" model="com.axelor.emp.db.Project" >
+		<view type="grid" name="project-grid" />
+		<domain>self.state = :state</domain>
+		<context name="state" expr="completed"/>
+	</action-view>
+
+	<menuitem title="Employees (Tree)" name="menu-empmgt-root-employee-tree" parent="menu-empmgt-root" action="action.empmgt.employee-tree" />
+	<action-view name="action.empmgt.employee-tree" title="Employees" model="com.axelor.emp.db.Employee">
+		<view type="tree" name="employee-tree" />
+	</action-view>
+	
+</object-views>

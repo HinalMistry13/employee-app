@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<grid model="com.axelor.emp.db.Employee" title="Employee" name="employee-grid">
+		<!-- <toolbar> <button name="btnPrint" icon="fa-print" title="Print" onClick="act1" /> <button name="btnExport" icon="fa-rocket" title="Export" onClick="act2" 
+			/> </toolbar> <menubar> <menu title="Actions"> <item title="Action 1" action="action.some" /> <item title="Action 2" action="action.thing" /> </menu> </menubar> 
+			<hilite background="warning" if="$contains(name, 'Hinal')"/> -->
+		<field name="name" title="Employee Name" />
+		<field name="salary" title="Employee Salary" />
+		<field name="department" title="Department" />
+		<field name="contacts" title="Contacts"/>
+		<field name="location" title="Employee Location" />
+		<field name="projects" title="Projects" />
+		<button name="btnGetData" title="Get Data" icon="fa-file-text-o" onClick="show-data" width="200px"/>	
+	</grid>
+	
+	<action-view name="show-data" title="Employee" model="com.axelor.emp.db.Employee">
+		<view type="form" name="employee-form"/>
+		<context name="_showRecord" expr="eval: __self__.id"/>
+	</action-view>
+	
+	<cards model="com.axelor.emp.db.Employee" title="Employees" name="employee-cards">
+		<field name="name" />
+		<field name="salary" />
+		<field name="department" />	
+		<field name="location" />
+		<field name="projects" />
+		<template>
+			<![CDATA[
+				<div class="span4 card-image">
+    				<img src="img/user.png">
+    				<strong>{{name}}</strong>
+  				</div>
+  				<div class="span4">
+  					<p align="right"><strong>Department : </strong>
+  					<br><br>
+  					<strong>Location : </strong>
+  					<br><br></p>
+  					<strong>Contacts : </strong>
+  					<br>
+  					<contacts>
+				    	<div data-ng-repeat="c in contacts">
+  							{{c.contactNumber}} ({{c.type}})<br>
+  						</div>
+				    </contacts>
+				</div>
+  				<div class="span4">
+  					{{department.name}}
+  					<br><br>
+  					<location>
+  						{{location.city}}
+  					</location>
+  					<br><br>
+  				    <strong>Projects (Type) :</strong>
+  					<br>
+  					<project>
+  						<div data-ng-repeat="p in project">
+  							{{p.name}} ({{p.type}})<br>
+  						</div>
+				    </project>
+				</div>
+			]]>
+		</template>
+	</cards>
+
+	<tree name="employee-tree" title="Employee">
+		<column name="title" type="string" />
+		<column name="progress" type="integer" />
+
+		<node model="com.axelor.emp.db.Employee">
+			<field name="name" as="title" />
+		</node>
+
+		<node model="com.axelor.emp.db.Project" parent="employees" draggable="true">
+			<field name="name" as="title" />
+			<field name="progress" as="progress" />
+		</node>
+	</tree>
+
+	<form model="com.axelor.emp.db.Employee" title="Employee" name="employee-form"  onLoad="on-load,fun-call"><!-- onNew="fun.call"-->
+		<panel title="Overview">
+			<field name="name" />
+			<field name="salary" colSpan="4" />
+			<field name="isTech" widget="boolean-switch" colSpan="2" title="Is Technical" />
+			<field name="department" onSelect="dept-type-wise" /><!-- domain="self.isTechnical=:isTech"/ -->
+			<field name="location" />
+		</panel>
+		<panel-related field="contacts" form-view="contact-form-popup">
+			<field name="type" />
+			<field name="contactNumber" />
+		</panel-related>
+<!-- 		<panel title="Contacts"> -->
+<!-- 			<field name="contacts" showTitle="false" colSpan="12"> -->
+<!-- 				<editor> -->
+<!-- 					<field name="type" /> -->
+<!-- 					<field name="contactNumber" /> -->
+<!-- 				</editor> -->
+<!-- 			</field> -->
+<!-- 		</panel> -->
+
+		<panel-related field="projects" form-view="project-form-popup">
+			<field name="name" />
+			<field name="type" />
+			<field name="startDate" />
+			<field name="endDate" />
+			<field name="state" />
+		</panel-related>
+		 
+	</form>
+
+	<form model="com.axelor.emp.db.Contact" title="Contact" name="contact-form-popup" onNew="fun-call2">
+		<field name="type" />
+		<field name="contactNumber" />
+	</form>
+	
+	<form model="com.axelor.emp.db.Project" title="Project" name="project-form-popup" onNew="project-on-create,default-data">
+		<field name="name" />
+		<field name="type" />
+		<field name="startDate" />
+		<field name="endDate" />
+		<field name="state" />
+	</form>
+
+	<action-method name="fun-call">
+		<call class="com.axelor.emp.controller.EmpController" method="getData" />
+	</action-method>
+
+	<action-attrs name="dept-type-wise">
+		<attribute name="domain" for="department" expr="eval: &quot; self.isTechnical=:isTech &quot;" />
+	</action-attrs>
+
+	<action-attrs name="on-load">
+		<attribute name="value:set" for="isTech" expr="eval: department.isTechnical" />
+	</action-attrs>
+	
+	<action-validate name="fun-call2">
+		<notify message="eval: __parent__.name"/>
+		<notify message="eval: __user__"/>
+<!-- 		<notify message="eval:__this__.id"/> -->
+<!-- 		<notify message="eval:__self__.id "/> -->
+<!-- 		<notify message="eval:__ref__.id"/> -->
+	</action-validate>
+
+</object-views>

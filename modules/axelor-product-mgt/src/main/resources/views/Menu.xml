@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<menuitem title="Product Mgt" name="menu-productmgt-root"/>
+	
+	<menuitem title="Category" name="menu-productmgt-root-category" parent="menu-productmgt-root" action="action.productmgt.category" />
+	<action-view name="action.productmgt.category" title="Product Category" model="com.axelor.product.db.ProductCategory">
+		<view type="grid" name="product-category-grid" />
+		<view type="form" name="product-category-form" />
+	</action-view>
+	
+	<menuitem title="Products" name="menu-productmgt-root-product" parent="menu-productmgt-root" action="action.productmgt.product" />
+	<action-view name="action.productmgt.product" title="Product" model="com.axelor.product.db.Product">
+		<view type="grid" name="product-grid" />
+		<view type="form" name="product-form" />
+	</action-view>
+	
+	<menuitem title="Orders" name="menu-productmgt-root-order" parent="menu-productmgt-root" action="action.productmgt.order" />
+	<action-view name="action.productmgt.order" title="Order" model="com.axelor.product.db.Order">
+		<view type="grid" name="order-grid" />
+		<view type="form" name="order-form" />
+	</action-view>
+	
+	<menuitem title="Order Items" name="menu-productmgt-root-order-item" parent="menu-productmgt-root" action="action.productmgt.orderitem" />
+	<action-view name="action.productmgt.orderitem" title="Order Item" model="com.axelor.product.db.OrderItem">
+		<view type="grid" name="order-item-grid" />
+		<view type="form" name="order-item-form" />
+	</action-view>
+	
+	<dashboard name="welcome.dashboard" title="Welcome!">
+	    <dashlet action="chart:chart.sales.per.month.bar"/>
+	    <dashlet action="chart:chart.sales.per.month.hbar"/>
+	    <dashlet action="chart:chart.product.sale.pie"/>
+	    <dashlet action="chart:chart.product.sale.line"/>
+  	    <dashlet action="chart:chart.product.sale.donut"/>
+  	    <dashlet action="chart:chart.product.sale.funnel"/>
+  	</dashboard>
+
+	<action-view name="welcome" title="Welcome!">
+	    <view type="dashboard" name="welcome.dashboard"/>
+	</action-view>
+	
+	<menuitem name="menu-dashboards" order="-101" title="Dashboards" icon="fa-dashboard" icon-background="blue"/>
+	
+	<menuitem name="menu-welcome" parent="menu-dashboards" title="Welcome!" action="welcome"/>
+
+</object-views>

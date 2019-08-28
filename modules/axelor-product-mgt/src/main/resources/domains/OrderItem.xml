@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models
+	xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
+
+	<module package="com.axelor.product.db" name="product"/>
+	<entity name="OrderItem">
+		<many-to-one name="orderId" ref="com.axelor.product.db.Order" title="Order No" required="true"/>
+		<many-to-one name="product" ref="com.axelor.product.db.Product" title="Product" required="true"/>
+		<integer name="quantity" title="Quantity" min="1" required="true"/>
+		<decimal name="price" title="Price" default="0.0" required="true"/>
+
+	<finder-method name="findByOrderCode" using="orderId" all="true"/>
+	</entity>
+
+</domain-models>

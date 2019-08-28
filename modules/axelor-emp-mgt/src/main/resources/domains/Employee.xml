@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models
+	xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
+
+	<module package="com.axelor.emp.db" name="employee"/>
+	<entity name="Employee">
+		<string name="name" title="Name"/>
+		<long name="salary" title="Salary"/>
+		<boolean name="isTech" transient="true"/>
+		<one-to-one ref="com.axelor.emp.db.Department" name="department" title="Department"/>
+		<one-to-many name="contacts" ref="com.axelor.emp.db.Contact" mappedBy="employee" title="Contacts"/>
+		<many-to-one name="location" title="Location" ref="com.axelor.emp.db.Location"/>
+		<many-to-many name="projects" title="Projects" ref="com.axelor.emp.db.Project" />
+	</entity>
+
+</domain-models>

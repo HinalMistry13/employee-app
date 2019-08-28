@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models
+	xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
+
+	<module package="com.axelor.emp.db" name="employee"/>
+	<entity name="Project">
+		<string name="name" title="Name"/>
+		<string name="type" title="Type"/>
+		<date name="startDate" title="Start Date"/>
+		<date name="endDate" title="End Date"/>
+		<integer name="priority" title="Priority"/>
+		<string name="state" title="State" selection="com.axelor.project.state"/>
+		<many-to-many name="employees" title="Employees" ref="com.axelor.emp.db.Employee" mappedBy="projects"/>
+	</entity>
+
+</domain-models>
